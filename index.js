@@ -12,7 +12,7 @@ http.createServer((req, res) => {
 // ====================== إعداد البوت ======================
 function createBot() {
     const bot = mineflayer.createBot({
-        host: 'dynamic-10.magmanode.com',
+        host: 'gold.magmanode.com',
         port: 25723,
         username: 'Gaza_Guard',
         version: '1.20.4',
