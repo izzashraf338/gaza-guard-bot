@@ -27,13 +27,13 @@ function createBot() {
             }
         }, 30000);
 
-        // Register أول ما يدخل
+        // Register مع Slash
         setTimeout(() => {
-            bot.chat('register [Gaza_Guard] [Gaza_Guard]');
-            console.log('📢 تم إرسال: register [Gaza_Guard] [Gaza_Guard]');
+            bot.chat('/register [Gaza_Guard] [Gaza_Guard]');
+            console.log('📢 تم إرسال: /register [Gaza_Guard] [Gaza_Guard]');
         }, 3000);
 
-        // Login بعد التسجيل
+        // Login
         setTimeout(() => {
             bot.chat('/login [Gaza_Guard]');
             console.log('📢 تم إرسال: /login [Gaza_Guard]');
