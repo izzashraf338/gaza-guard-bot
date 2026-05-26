@@ -13,7 +13,6 @@ http.createServer((req, res) => {
 function createBot() {
     const bot = mineflayer.createBot({
         host: 'denailmc.xyz',
-        port: ,
         username: 'Gaza_Guard',
         version: '1.20.4',
     });
