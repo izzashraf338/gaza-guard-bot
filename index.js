@@ -30,14 +30,20 @@ function createBot() {
         // Register أول ما يدخل
         setTimeout(() => {
             bot.chat('register [Gaza_Guard] [Gaza_Guard]');
-            console.log('📢 تم إرسال أمر التسجيل');
+            console.log('📢 تم إرسال: register [Gaza_Guard] [Gaza_Guard]');
         }, 3000);
 
-        // TPA للاعب S338 بعد 8 ثواني من الدخول
+        // Login بعد التسجيل
+        setTimeout(() => {
+            bot.chat('/login [Gaza_Guard]');
+            console.log('📢 تم إرسال: /login [Gaza_Guard]');
+        }, 6000);
+
+        // TPA لـ S338
         setTimeout(() => {
             bot.chat('/tpa S338');
-            console.log('📍 تم إرسال أمر: /tpa S338');
-        }, 8000);
+            console.log('📍 تم إرسال: /tpa S338');
+        }, 10000);
     });
 
     bot.on('death', () => {
