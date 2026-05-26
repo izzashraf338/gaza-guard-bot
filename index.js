@@ -46,16 +46,8 @@ function createBot() {
         }, 10000);
     });
 
-    bot.on('death', () => {
-        console.log('💀 البوت مات، جاري الريسبون...');
-        bot.respawn();
-    });
-
-    bot.on('end', () => {
-        console.log('🔌 انقطع الاتصال، جاري إعادة الاتصال...');
-        setTimeout(createBot, 5000);
-    });
-
+    bot.on('death', () => bot.respawn());
+    bot.on('end', () => setTimeout(createBot, 5000));
     bot.on('error', (err) => console.log('❌ خطأ:', err.message));
     bot.on('kicked', (reason) => console.log('🚪 تم الطرد:', reason));
 }
