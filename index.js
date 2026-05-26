@@ -27,23 +27,29 @@ function createBot() {
             }
         }, 30000);
 
-        // Register مع Slash
+        // 1. Register
         setTimeout(() => {
             bot.chat('/register [Gaza_Guard] [Gaza_Guard]');
             console.log('📢 تم إرسال: /register [Gaza_Guard] [Gaza_Guard]');
         }, 3000);
 
-        // Login
+        // 2. Login
         setTimeout(() => {
             bot.chat('/login [Gaza_Guard]');
             console.log('📢 تم إرسال: /login [Gaza_Guard]');
         }, 6000);
 
-        // TPA لـ S338
+        // 3. RTP + اختيار WORLD
         setTimeout(() => {
-            bot.chat('/tpa S338');
-            console.log('📍 تم إرسال: /tpa S338');
+            bot.chat('/rtp');
+            console.log('📢 تم إرسال: /rtp');
         }, 10000);
+
+        // اختيار WORLD (الخيار الوسط) بعد 3 ثواني من /rtp
+        setTimeout(() => {
+            bot.chat('WORLD');           // أو الرقم 2 إذا كان يطلب رقم
+            console.log('📍 تم اختيار: WORLD');
+        }, 13000);
     });
 
     bot.on('death', () => bot.respawn());
