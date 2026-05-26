@@ -1,13 +1,13 @@
 const mineflayer = require('mineflayer');
 const http = require('http');
 
-// HTTP Server
+// ====================== HTTP Server ======================
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Gaza_Guard Bot is Running 24/7 🔥');
 }).listen(process.env.PORT || 3000);
 
-// البوت
+// ====================== البوت ======================
 function createBot() {
     const bot = mineflayer.createBot({
         host: 'denailmc.xyz',
@@ -21,19 +21,35 @@ function createBot() {
 
         // Anti-AFK
         setInterval(() => {
-            bot.setControlState('jump', true);
-            setTimeout(() => bot.setControlState('jump', false), 500);
+            if (bot.entity) {
+                bot.setControlState('jump', true);
+                setTimeout(() => bot.setControlState('jump', false), 500);
+            }
         }, 30000);
 
-        // Register Command - أول ما يدخل
+        // Register أول ما يدخل
         setTimeout(() => {
             bot.chat('register [Gaza_Guard] [Gaza_Guard]');
-            console.log('📢 تم إرسال: register [Gaza_Guard] [Gaza_Guard]');
+            console.log('📢 تم إرسال أمر التسجيل');
         }, 3000);
+
+        // TPA للاعب S338 بعد 8 ثواني من الدخول
+        setTimeout(() => {
+            bot.chat('/tpa S338');
+            console.log('📍 تم إرسال أمر: /tpa S338');
+        }, 8000);
     });
 
-    bot.on('death', () => bot.respawn());
-    bot.on('end', () => setTimeout(createBot, 5000));
+    bot.on('death', () => {
+        console.log('💀 البوت مات، جاري الريسبون...');
+        bot.respawn();
+    });
+
+    bot.on('end', () => {
+        console.log('🔌 انقطع الاتصال، جاري إعادة الاتصال...');
+        setTimeout(createBot, 5000);
+    });
+
     bot.on('error', (err) => console.log('❌ خطأ:', err.message));
     bot.on('kicked', (reason) => console.log('🚪 تم الطرد:', reason));
 }
