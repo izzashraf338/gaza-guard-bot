@@ -1,5 +1,4 @@
 const mineflayer = require('mineflayer');
-const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
 const http = require('http');
 
 // ====================== HTTP Server ======================
@@ -17,14 +16,8 @@ function createBot() {
         version: '1.20.4',
     });
 
-    bot.loadPlugin(pathfinder);
-
     bot.on('spawn', () => {
         console.log('✅ Gaza_Guard دخل denailmc.xyz !');
-
-        const mcData = require('minecraft-data')(bot.version);
-        const movements = new Movements(bot, mcData);
-        bot.pathfinder.setMovements(movements);
 
         // Anti-AFK
         setInterval(() => {
@@ -44,11 +37,10 @@ function createBot() {
         setTimeout(() => bot.chat('/rtp'), 10000);
         setTimeout(() => bot.chat('العالم'), 13000);
 
-        // الذهاب إلى الإحداثيات
+        // الذهاب إلى الإحداثيات بالطريقة البسيطة (بدون pathfinder)
         setTimeout(() => {
-            const goal = new goals.GoalBlock(338, 63, -147);
-            bot.pathfinder.setGoal(goal);
-            console.log('🗺️ البوت يتحرك إلى الإحداثيات: 338, 63, -147');
+            console.log('🗺️ يتم التوجه إلى الإحداثيات: 338, 63, -147');
+            bot.chat(`/tp 338 63 -147`);
         }, 20000);
     });
 
