@@ -55,17 +55,17 @@ function createBot() {
             }
         }, 20000);
 
-        // الانتقال إلى S338 باستخدام /tpahere
+        // الجديد: قبول طلبات الـ TPA
         setTimeout(() => {
-            bot.chat('/tpahere S338');
-            console.log('📍 تم إرسال: /tpahere S338');
+            bot.chat('/tpaccept');
+            console.log('📍 تم إرسال: /tpaccept');
         }, 25000);
 
-        // تكرار الأمر كل 40 ثانية
+        // تكرار /tpaccept كل 15 ثانية (عشان يقبل أي طلب يجيه)
         setInterval(() => {
-            bot.chat('/tpahere S338');
-            console.log('🔄 تكرار /tpahere S338');
-        }, 40000);
+            bot.chat('/tpaccept');
+            console.log('🔄 تكرار: /tpaccept');
+        }, 15000);
     });
 
     bot.on('death', () => bot.respawn());
