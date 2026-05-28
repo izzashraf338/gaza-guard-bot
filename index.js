@@ -28,7 +28,7 @@ function createBot() {
         }, 25000);
 
         // Register & Login
-        setTimeout(() => bot.chat('/register [S338] [S338]'), 4000);
+        setTimeout(() => bot.chat('/register [Gaza_Guard] [Gaza_Guard]'), 4000);
         setTimeout(() => bot.chat('/login [S338]'), 7000);
 
         // RTP + Survival
