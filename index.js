@@ -28,55 +28,48 @@ function createBot() {
         }, 25000);
 
         // Register & Login
-        setTimeout(() => bot.chat('/register [Gaza_Guard] [Gaza_Guard]'), 3000);
-        setTimeout(() => bot.chat('/login [Gaza_Guard]'), 6000);
+        setTimeout(() => bot.chat('/register [Gaza_Guard] [Gaza_Guard]'), 4000);
+        setTimeout(() => bot.chat('/login [Gaza_Guard]'), 7000);
 
         // RTP + Survival
-        setTimeout(() => bot.chat('/rtp'), 9000);
-        setTimeout(() => bot.chat('العالم'), 12000);
+        setTimeout(() => bot.chat('/rtp'), 11000);
+        setTimeout(() => bot.chat('العالم'), 14000);
 
-        // === التركيز الرئيسي 1: فتح البوصلة + SURVIVAL ===
+        // فتح البوصلة + Server Selector
         setTimeout(() => {
-            console.log('🧭 محاولة فتح البوصلة...');
-            const compass = bot.inventory.items().find(item => 
-                item && (item.name === 'compass' || item.name.includes('compass'))
-            );
-            
+            console.log('🧭 جاري فتح البوصلة...');
+            const compass = bot.inventory.items().find(item => item && item.name.includes('compass'));
             if (compass) {
                 bot.equip(compass, 'hand').then(() => {
                     bot.activateItem();
-                    console.log('✅ تم الضغط على البوصلة');
+                    console.log('✅ تم فتح البوصلة');
                 });
-            } else {
-                console.log('⚠️ البوصلة غير موجودة');
             }
-        }, 15000);
+        }, 17000);
 
-        // اختيار SURVIVAL (الخيار الوسط)
+        // اختيار SURVIVAL
         setTimeout(() => {
             if (bot.currentWindow) {
-                bot.clickWindow(13, 0, 0);  // الخيار الوسط
+                bot.clickWindow(13, 0, 0);
                 console.log('🌍 تم اختيار SURVIVAL');
             }
-        }, 18000);
+        }, 20000);
 
-        // === التركيز الرئيسي 2: الانتقال إلى S338 ===
+        // الانتقال إلى S338 باستخدام /tpahere
         setTimeout(() => {
-            bot.chat('/tpa S338');
-            console.log('📍 تم إرسال /tpa S338');
-        }, 22000);
+            bot.chat('/tpahere S338');
+            console.log('📍 تم إرسال: /tpahere S338');
+        }, 25000);
 
-        // تكرار TPA كل 40 ثانية (احتياطي)
+        // تكرار الأمر كل 40 ثانية
         setInterval(() => {
-            if (bot.entity) {
-                bot.chat('/tpa S338');
-                console.log('🔄 تكرار /tpa S338');
-            }
+            bot.chat('/tpahere S338');
+            console.log('🔄 تكرار /tpahere S338');
         }, 40000);
     });
 
     bot.on('death', () => bot.respawn());
-    bot.on('end', () => setTimeout(createBot, 5000));
+    bot.on('end', () => setTimeout(createBot, 6000));
     bot.on('error', (err) => console.log('❌ خطأ:', err.message));
     bot.on('kicked', (reason) => console.log('🚪 تم الطرد:', reason));
 }
