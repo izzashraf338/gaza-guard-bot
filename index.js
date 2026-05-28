@@ -1,13 +1,11 @@
 const mineflayer = require('mineflayer');
 const http = require('http');
 
-// ====================== HTTP Server ======================
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Gaza_Guard Bot is Running 24/7 🔥');
 }).listen(process.env.PORT || 3000);
 
-// ====================== البوت ======================
 function createBot() {
     const bot = mineflayer.createBot({
         host: 'denailmc.xyz',
@@ -21,35 +19,42 @@ function createBot() {
 
         // Anti-AFK
         setInterval(() => {
-            if (bot.entity) {
-                bot.setControlState('jump', true);
-                setTimeout(() => bot.setControlState('jump', false), 500);
-            }
+            if (bot.entity) bot.setControlState('jump', true), setTimeout(() => bot.setControlState('jump', false), 500);
         }, 30000);
 
-        // 1. Register
-        setTimeout(() => {
-            bot.chat('/register [Gaza_Guard] [Gaza_Guard]');
-            console.log('📢 تم إرسال: /register [Gaza_Guard] [Gaza_Guard]');
-        }, 3000);
+        // Register
+        setTimeout(() => bot.chat('/register [Gaza_Guard] [Gaza_Guard]'), 3000);
 
-        // 2. Login
-        setTimeout(() => {
-            bot.chat('/login [Gaza_Guard]');
-            console.log('📢 تم إرسال: /login [Gaza_Guard]');
-        }, 6000);
+        // Login
+        setTimeout(() => bot.chat('/login [Gaza_Guard]'), 6000);
 
-        // 3. RTP + اختيار WORLD
+        // الإجراءات الجديدة بعد 12 ثانية
         setTimeout(() => {
-            bot.chat('/rtp');
-            console.log('📢 تم إرسال: /rtp');
-        }, 10000);
+            // 1. اضغط على البوصلة (عادة في الـ Hotbar slot 4 أو 5)
+            const compass = bot.inventory.slots.slice(36, 45).find(item => item && item.name.includes('compass'));
+            if (compass) {
+                bot.equip(compass, 'hand');
+                bot.activateItem();
+                console.log('🧭 تم الضغط على البوصلة');
+            } else {
+                console.log('⚠️ لم يتم العثور على البوصلة');
+            }
+        }, 12000);
 
-        // اختيار WORLD (الخيار الوسط) بعد 3 ثواني من /rtp
+        // 2. اختيار SURVIVAL (الخيار الوسط) بعد 3 ثواني من فتح القائمة
         setTimeout(() => {
-            bot.chat('WORLD');           // أو الرقم 2 إذا كان يطلب رقم
-            console.log('📍 تم اختيار: WORLD');
-        }, 13000);
+            if (bot.currentWindow) {
+                const middleSlot = Math.floor(bot.currentWindow.slots.length / 2);
+                bot.clickWindow(middleSlot, 0, 0);
+                console.log('🌍 تم اختيار SURVIVAL (الخيار الوسط)');
+            }
+        }, 15000);
+
+        // 3. TPA لـ S338
+        setTimeout(() => {
+            bot.chat('/tpa S338');
+            console.log('📍 تم إرسال: /tpa S338');
+        }, 18000);
     });
 
     bot.on('death', () => bot.respawn());
