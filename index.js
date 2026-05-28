@@ -1,11 +1,14 @@
 const mineflayer = require('mineflayer');
+const { pathfinder, Movements, goals } = require('mineflayer-pathfinder');
 const http = require('http');
 
+// ====================== HTTP Server ======================
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Gaza_Guard Bot is Running 24/7 🔥');
 }).listen(process.env.PORT || 3000);
 
+// ====================== البوت ======================
 function createBot() {
     const bot = mineflayer.createBot({
         host: 'denailmc.xyz',
@@ -14,12 +17,21 @@ function createBot() {
         version: '1.20.4',
     });
 
+    bot.loadPlugin(pathfinder);
+
     bot.on('spawn', () => {
         console.log('✅ Gaza_Guard دخل denailmc.xyz !');
 
+        const mcData = require('minecraft-data')(bot.version);
+        const movements = new Movements(bot, mcData);
+        bot.pathfinder.setMovements(movements);
+
         // Anti-AFK
         setInterval(() => {
-            if (bot.entity) bot.setControlState('jump', true), setTimeout(() => bot.setControlState('jump', false), 500);
+            if (bot.entity) {
+                bot.setControlState('jump', true);
+                setTimeout(() => bot.setControlState('jump', false), 500);
+            }
         }, 30000);
 
         // Register
@@ -28,33 +40,16 @@ function createBot() {
         // Login
         setTimeout(() => bot.chat('/login [Gaza_Guard]'), 6000);
 
-        // الإجراءات الجديدة بعد 12 ثانية
-        setTimeout(() => {
-            // 1. اضغط على البوصلة (عادة في الـ Hotbar slot 4 أو 5)
-            const compass = bot.inventory.slots.slice(36, 45).find(item => item && item.name.includes('compass'));
-            if (compass) {
-                bot.equip(compass, 'hand');
-                bot.activateItem();
-                console.log('🧭 تم الضغط على البوصلة');
-            } else {
-                console.log('⚠️ لم يتم العثور على البوصلة');
-            }
-        }, 12000);
+        // RTP + Survival
+        setTimeout(() => bot.chat('/rtp'), 10000);
+        setTimeout(() => bot.chat('العالم'), 13000);
 
-        // 2. اختيار SURVIVAL (الخيار الوسط) بعد 3 ثواني من فتح القائمة
+        // الذهاب إلى الإحداثيات
         setTimeout(() => {
-            if (bot.currentWindow) {
-                const middleSlot = Math.floor(bot.currentWindow.slots.length / 2);
-                bot.clickWindow(middleSlot, 0, 0);
-                console.log('🌍 تم اختيار SURVIVAL (الخيار الوسط)');
-            }
-        }, 15000);
-
-        // 3. TPA لـ S338
-        setTimeout(() => {
-            bot.chat('/tpa S338');
-            console.log('📍 تم إرسال: /tpa S338');
-        }, 18000);
+            const goal = new goals.GoalBlock(338, 63, -147);
+            bot.pathfinder.setGoal(goal);
+            console.log('🗺️ البوت يتحرك إلى الإحداثيات: 338, 63, -147');
+        }, 20000);
     });
 
     bot.on('death', () => bot.respawn());
