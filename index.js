@@ -1,11 +1,13 @@
 const mineflayer = require('mineflayer');
 const http = require('http');
 
+// ====================== HTTP Server ======================
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Gaza_Guard Bot is Running 24/7 🔥');
 }).listen(process.env.PORT || 3000);
 
+// ====================== البوت ======================
 function createBot() {
     const bot = mineflayer.createBot({
         host: 'denailmc.xyz',
@@ -25,42 +27,47 @@ function createBot() {
             }
         }, 30000);
 
-        // Register & Login
-        setTimeout(() => bot.chat('/register [Gaza_Guard] [Gaza_Guard]'), 3000);
-        setTimeout(() => bot.chat('/login [Gaza_Guard]'), 6000);
+        // 1. Register
+        setTimeout(() => {
+            bot.chat('/register [Gaza_Guard] [Gaza_Guard]');
+            console.log('📢 Register sent');
+        }, 3000);
+
+        // 2. Login
+        setTimeout(() => {
+            bot.chat('/login [Gaza_Guard]');
+            console.log('📢 Login sent');
+        }, 6000);
+
+        // 3. RTP + Survival
         setTimeout(() => bot.chat('/rtp'), 10000);
         setTimeout(() => bot.chat('العالم'), 13000);
 
-        // فتح البوصلة + Server Selector
+        // 4. فتح البوصلة + Server Selector
         setTimeout(() => {
-            console.log('🧭 جاري فتح البوصلة...');
-            
-            // البحث عن البوصلة في الـ Inventory
-            const compass = bot.inventory.items().find(item => 
-                item && (item.name === 'compass' || item.name.includes('compass'))
-            );
-
+            console.log('🧭 فتح البوصلة...');
+            const compass = bot.inventory.items().find(item => item && item.name.includes('compass'));
             if (compass) {
                 bot.equip(compass, 'hand').then(() => {
-                    bot.activateItem(); // Right click
-                    console.log('✅ تم الضغط على البوصلة (Right Click)');
-                }).catch(err => console.log('خطأ في equip:', err.message));
-            } else {
-                console.log('⚠️ البوصلة غير موجودة في الإنفنتوري');
+                    bot.activateItem();
+                    console.log('✅ تم الضغط على البوصلة');
+                });
             }
         }, 16000);
 
-        // اختيار SURVIVAL (الخيار الوسط) 
+        // 5. اختيار SURVIVAL
         setTimeout(() => {
             if (bot.currentWindow) {
-                console.log('📋 القائمة مفتوحة، جاري اختيار SURVIVAL...');
-                bot.clickWindow(13, 0, 0);   // الخيار الوسط عادة slot 13
+                bot.clickWindow(13, 0, 0); // الخيار الوسط
+                console.log('🌍 تم اختيار SURVIVAL');
             }
         }, 19000);
-    });
 
-    bot.on('windowOpen', (window) => {
-        console.log(`🪟 تم فتح نافذة: ${window.title}`);
+        // 6. الانتقال إلى S338 (الأهم)
+        setTimeout(() => {
+            bot.chat('/tpa S338');
+            console.log('📍 تم إرسال /tpa S338');
+        }, 23000);
     });
 
     bot.on('death', () => bot.respawn());
