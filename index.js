@@ -25,49 +25,54 @@ function createBot() {
                 bot.setControlState('jump', true);
                 setTimeout(() => bot.setControlState('jump', false), 500);
             }
-        }, 30000);
+        }, 25000);
 
-        // 1. Register
+        // Register & Login
+        setTimeout(() => bot.chat('/register [Gaza_Guard] [Gaza_Guard]'), 3000);
+        setTimeout(() => bot.chat('/login [Gaza_Guard]'), 6000);
+
+        // RTP + Survival
+        setTimeout(() => bot.chat('/rtp'), 9000);
+        setTimeout(() => bot.chat('العالم'), 12000);
+
+        // === التركيز الرئيسي 1: فتح البوصلة + SURVIVAL ===
         setTimeout(() => {
-            bot.chat('/register [Gaza_Guard] [Gaza_Guard]');
-            console.log('📢 Register sent');
-        }, 3000);
-
-        // 2. Login
-        setTimeout(() => {
-            bot.chat('/login [Gaza_Guard]');
-            console.log('📢 Login sent');
-        }, 6000);
-
-        // 3. RTP + Survival
-        setTimeout(() => bot.chat('/rtp'), 10000);
-        setTimeout(() => bot.chat('العالم'), 13000);
-
-        // 4. فتح البوصلة + Server Selector
-        setTimeout(() => {
-            console.log('🧭 فتح البوصلة...');
-            const compass = bot.inventory.items().find(item => item && item.name.includes('compass'));
+            console.log('🧭 محاولة فتح البوصلة...');
+            const compass = bot.inventory.items().find(item => 
+                item && (item.name === 'compass' || item.name.includes('compass'))
+            );
+            
             if (compass) {
                 bot.equip(compass, 'hand').then(() => {
                     bot.activateItem();
                     console.log('✅ تم الضغط على البوصلة');
                 });
+            } else {
+                console.log('⚠️ البوصلة غير موجودة');
             }
-        }, 16000);
+        }, 15000);
 
-        // 5. اختيار SURVIVAL
+        // اختيار SURVIVAL (الخيار الوسط)
         setTimeout(() => {
             if (bot.currentWindow) {
-                bot.clickWindow(13, 0, 0); // الخيار الوسط
+                bot.clickWindow(13, 0, 0);  // الخيار الوسط
                 console.log('🌍 تم اختيار SURVIVAL');
             }
-        }, 19000);
+        }, 18000);
 
-        // 6. الانتقال إلى S338 (الأهم)
+        // === التركيز الرئيسي 2: الانتقال إلى S338 ===
         setTimeout(() => {
             bot.chat('/tpa S338');
             console.log('📍 تم إرسال /tpa S338');
-        }, 23000);
+        }, 22000);
+
+        // تكرار TPA كل 40 ثانية (احتياطي)
+        setInterval(() => {
+            if (bot.entity) {
+                bot.chat('/tpa S338');
+                console.log('🔄 تكرار /tpa S338');
+            }
+        }, 40000);
     });
 
     bot.on('death', () => bot.respawn());
